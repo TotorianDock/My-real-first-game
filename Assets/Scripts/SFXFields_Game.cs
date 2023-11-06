@@ -52,6 +52,11 @@ public class SFXFields_Game : SFXSystem
         ClipsName _shieldUpSound = (ClipsName)Random.Range((float)ClipsName.ShieldUp1, (float)ClipsName.ShieldUp2 + 1);
         PlaySound(sounds[(int)_shieldUpSound], 0.5f);
     }
+	public void FailedAttackSound()
+	{
+        ClipsName _failedAttackSound = (ClipsName)Random.Range((float)ClipsName.FailedAttack1, (float)ClipsName.FailedAttack2 + 1);
+        PlaySound(sounds[(int)_failedAttackSound], 0.5f);
+    }
 
 	private enum ClipsName
 	{
@@ -84,6 +89,9 @@ public class SFXFields_Game : SFXSystem
 		Debuff = 21,
 
         ShieldUp1 = 22,
-		ShieldUp2 = 23
+		ShieldUp2 = 23,
+
+		FailedAttack1 = 24,
+		FailedAttack2 = 25
 	}
 }

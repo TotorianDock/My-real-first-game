@@ -7,7 +7,8 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _dialogueText;
     private string _dT;
     [SerializeField] private TextMeshProUGUI _dialogueTextDefeat;
-    [SerializeField] private TextMeshProUGUI _dialogueTextWon;
+    [SerializeField] private TextMeshProUGUI _dialogueTextWon_E;
+    [SerializeField] private TextMeshProUGUI _dialogueTextWon_R;
     [SerializeField] private TextMeshProUGUI _dialogueTextWon2;
 
     private float _textSpeed;
@@ -29,7 +30,8 @@ public class DialogueSystem : MonoBehaviour
         else
             _dialogueText.text = string.Empty;
         _dialogueTextDefeat.text = string.Empty;
-        _dialogueTextWon.text = string.Empty;
+        _dialogueTextWon_E.text = string.Empty;
+        _dialogueTextWon_R.text = string.Empty;
         _dialogueTextWon2.text = string.Empty;
     }
     private IEnumerator StartDialogue(string _line)
@@ -73,8 +75,12 @@ public class DialogueSystem : MonoBehaviour
                     _dialogueTextDefeat.text += c;
                     break;
 
-                case State.Win:
-                    _dialogueTextWon.text += c;
+                case State.Win_E:
+                    _dialogueTextWon_E.text += c;
+                    break;
+
+                case State.Win_R:
+                    _dialogueTextWon_R.text += c;
                     break;
 
                 case State.Win2:
@@ -230,7 +236,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Гиена нападает на вас!",
                 //Unit.EnemyName.Vulture => "",
                 
-                _ => "The M҈̱̝̳̟͉̭͕͛̚͜͞i̸̧̱̠̪̊̏̔̒̕ş̷͍̤͍̮̞̦̥͂͌̾̏̀͡ṣ̵̢̭̦̙̫̤̃̿̃̏͑̊͡i̷̢͎̯͔͑̊͡ͅn̵̢͉̦̗̜͂́̅͡ͅg҈̛͎̰̗̫̲̱͋̐̈́̌͑͢E̸̡̮̱͓̔̀̎̄̕ͅͅn̶̢̲͙͓̟͈̫̫̠̿̅̀͠ attacks you.",
+                _ => "The  M҈̱̝̳̟͉̭͕͛̚͜͞i̸̧̱̠̪̊̏̔̒̕ş̷͍̤͍̮̞̦̥͂͌̾̏̀͡ṣ̵̢̭̦̙̫̤̃̿̃̏͑̊͡i̷̢͎̯͔͑̊͡ͅn̵̢͉̦̗̜͂́̅͡ͅg҈̛͎̰̗̫̲̱͋̐̈́̌͑͢E̸̡̮̱͓̔̀̎̄̕ͅͅn̶̢̲͙͓̟͈̫̫̠̿̅̀͠'s attack is successful.",
             };
         }
         else if (!isRussianTranslation)
@@ -242,7 +248,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Hyena attacks you!",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M҈̱̝̳̟͉̭͕͛̚͜͞i̸̧̱̠̪̊̏̔̒̕ş̷͍̤͍̮̞̦̥͂͌̾̏̀͡ṣ̵̢̭̦̙̫̤̃̿̃̏͑̊͡i̷̢͎̯͔͑̊͡ͅn̵̢͉̦̗̜͂́̅͡ͅg҈̛͎̰̗̫̲̱͋̐̈́̌͑͢E̸̡̮̱͓̔̀̎̄̕ͅͅn̶̢̲͙͓̟͈̫̫̠̿̅̀͠ attacks you.",
+                _ => "The  M҈̱̝̳̟͉̭͕͛̚͜͞i̸̧̱̠̪̊̏̔̒̕ş̷͍̤͍̮̞̦̥͂͌̾̏̀͡ṣ̵̢̭̦̙̫̤̃̿̃̏͑̊͡i̷̢͎̯͔͑̊͡ͅn̵̢͉̦̗̜͂́̅͡ͅg҈̛͎̰̗̫̲̱͋̐̈́̌͑͢E̸̡̮̱͓̔̀̎̄̕ͅͅn̶̢̲͙͓̟͈̫̫̠̿̅̀͠'s attack is successful.",
             };
         }
 
@@ -260,7 +266,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Гиена нападает на вас...",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The Ḿ̵̧̩̜̱͙̰͒̕i̵̡̠̦̤̦̥̞͇̫̓̓͆̀̑́́͡s̸̨͙̩͉͑̂͛͌̐͡s҉̧͇̯̀̔̎̑̑́͒͠i҈̨̥̮̗̦̱̇̿͌̿̕n̷̢͍͖̬̩̋͋̄͒͊̕ǵ̶̡̟̯̞͚̭̂̇̾̕E̶̩͈̅̇̉͂̚͜͠n҈͖̗̰̝͚̒̓̅́̕͜  attacks you...",
+                _ => "The Ḿ̵̧̩̜̱͙̰͒̕i̵̡̠̦̤̦̥̞͇̫̓̓͆̀̑́́͡s̸̨͙̩͉͑̂͛͌̐͡s҉̧͇̯̀̔̎̑̑́͒͠i҈̨̥̮̗̦̱̇̿͌̿̕n̷̢͍͖̬̩̋͋̄͒͊̕ǵ̶̡̟̯̞͚̭̂̇̾̕E̶̩͈̅̇̉͂̚͜͠n҈͖̗̰̝͚̒̓̅́̕͜  attacks на вас...",
             };
         }
         else if (!isRussianTranslation)
@@ -272,7 +278,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Hyena attacks you...",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The Ḿ̵̧̩̜̱͙̰͒̕i̵̡̠̦̤̦̥̞͇̫̓̓͆̀̑́́͡s̸̨͙̩͉͑̂͛͌̐͡s҉̧͇̯̀̔̎̑̑́͒͠i҈̨̥̮̗̦̱̇̿͌̿̕n̷̢͍͖̬̩̋͋̄͒͊̕ǵ̶̡̟̯̞͚̭̂̇̾̕E̶̩͈̅̇̉͂̚͜͠n҈͖̗̰̝͚̒̓̅́̕͜  attacks you...",
+                _ => "The Ḿ̵̧̩̜̱͙̰͒̕i̵̡̠̦̤̦̥̞͇̫̓̓͆̀̑́́͡s̸̨͙̩͉͑̂͛͌̐͡s҉̧͇̯̀̔̎̑̑́͒͠i҈̨̥̮̗̦̱̇̿͌̿̕n̷̢͍͖̬̩̋͋̄͒͊̕ǵ̶̡̟̯̞͚̭̂̇̾̕E̶̩͈̅̇̉͂̚͜͠n҈͖̗̰̝͚̒̓̅́̕͜  attacks на вас...",
             };
         }
 
@@ -285,12 +291,12 @@ public class DialogueSystem : MonoBehaviour
         {
             _dT = enemyUnit.enemyName switch
             {
-                Unit.EnemyName.Snake => "Змея кусает собственный хвост...",
+                Unit.EnemyName.Snake => "Змея кусает свой хвост...",
                 Unit.EnemyName.Scorpio => "Скорпион играет в Доту 2...",
                 Unit.EnemyName.Hyena => "Гиена не выступает в цирке...",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is healing..",
+                _ => "The  M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is playing Dota 2...",
             };
         }
         else if (!isRussianTranslation)
@@ -302,7 +308,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Hyena eats carrion...",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is healing..",
+                _ => "The  M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is playing Dota 2...",
             };
         }
 
@@ -320,7 +326,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "... но она не волк!",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is healing....",
+                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  ... но она не волк.",
             };
         }
         else if (!isRussianTranslation)
@@ -332,7 +338,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "... and he heals!",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is healing....",
+                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠   ... но она не волк.",
             };
         }
 
@@ -350,7 +356,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Гиена смеется над вами",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is ready to block..",
+                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  curls up in a BALL,",
             };
         }
         else if (!isRussianTranslation)
@@ -362,7 +368,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Hyena's laughing at you",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is ready to block..",
+                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  curls up in a BALL,",
             };
         }
 
@@ -380,7 +386,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Вы смущаетесь, вы можете промануться",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is ready to block....",
+                _ => "You're shy, you might miss",
             };
         }
         else if (!isRussianTranslation)
@@ -392,7 +398,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "You're shy, you might miss",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is ready to block....",
+                _ => "Вы смущаетесь, вы можете промануться",
             };
         }
 
@@ -410,7 +416,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "Дикая Гиена мертва!",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̵̡͕̱̒̆́̿̕i҈̳̩͈̓̽̓͊̕͜s̴̡̞̱̫̭͎̣͉̆̈̆͞s̶̨̗̝̬̤̮̪̟͇̆̌̆̕i̵͖̠̫̭̊̆͌͢͝n҉̡̙̫̜̞̟̩̤̖͆́̄̌͡g҈̨̠͎̝̝̋̀͌̋̓̆͛͠ͅE҈̧̛̬͓͖̰͋͌͛̎͆͗͌n҈̠̞҇̆̐͜  is dead.",
+                _ => "The M̵̡͕̱̒̆́̿̕i҈̳̩͈̓̽̓͊̕͜s̴̡̞̱̫̭͎̣͉̆̈̆͞s̶̨̗̝̬̤̮̪̟͇̆̌̆̕i̵͖̠̫̭̊̆͌͢͝n҉̡̙̫̜̞̟̩̤̖͆́̄̌͡g҈̨̠͎̝̝̋̀͌̋̓̆͛͠ͅE҈̧̛̬͓͖̰͋͌͛̎͆͗͌n҈̠̞҇̆̐͜  is dead.?",
             };
         }
         else if (!isRussianTranslation)
@@ -422,7 +428,7 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Hyena => "The wild Hyena is dead!",
                 //Unit.EnemyName.Vulture => "",
 
-                _ => "The M̵̡͕̱̒̆́̿̕i҈̳̩͈̓̽̓͊̕͜s̴̡̞̱̫̭͎̣͉̆̈̆͞s̶̨̗̝̬̤̮̪̟͇̆̌̆̕i̵͖̠̫̭̊̆͌͢͝n҉̡̙̫̜̞̟̩̤̖͆́̄̌͡g҈̨̠͎̝̝̋̀͌̋̓̆͛͠ͅE҈̧̛̬͓͖̰͋͌͛̎͆͗͌n҈̠̞҇̆̐͜  is dead.",
+                _ => "The M̵̡͕̱̒̆́̿̕i҈̳̩͈̓̽̓͊̕͜s̴̡̞̱̫̭͎̣͉̆̈̆͞s̶̨̗̝̬̤̮̪̟͇̆̌̆̕i̵͖̠̫̭̊̆͌͢͝n҉̡̙̫̜̞̟̩̤̖͆́̄̌͡g҈̨̠͎̝̝̋̀͌̋̓̆͛͠ͅE҈̧̛̬͓͖̰͋͌͛̎͆͗͌n҈̠̞҇̆̐͜  is dead.?",
             };
         }
 
@@ -432,7 +438,7 @@ public class DialogueSystem : MonoBehaviour
     }
     public void LocationChange(bool isRussianTranslation, float _ExecutionTime)
     {
-        _dialogueTextWon.text = string.Empty;
+        _dialogueTextWon_E.text = string.Empty;
 
         if (isRussianTranslation)
             _dT = "Смена локации...";
@@ -467,11 +473,16 @@ public class DialogueSystem : MonoBehaviour
     public void YouWonBattle(bool isRussianTranslation, float _ExecutionTime)
     {
         if (isRussianTranslation)
+        {
             _dT = "Вы выиграли битву!";
+            _state = State.Win_R;
+        }
         else
+        {
             _dT = "You won the battle!";
+            _state = State.Win_E;
+        }
 
-        _state = State.Win;
         _CantInterrupt = true;
         this._ExecutionTime = _ExecutionTime;
         StartCoroutine(StartDialogue(_dT));
@@ -479,9 +490,9 @@ public class DialogueSystem : MonoBehaviour
     public void YouWonGame(bool isRussianTranslation, float _ExecutionTime)
     {
         if (isRussianTranslation)
-            _dialogueTextWon2.text = "Вы выиграли игру!";
+            _dT = "Вы выиграли игру!";
         else
-            _dialogueTextWon2.text = "You won the game!";
+            _dT = "You won the game!";
 
         _state = State.Win2;
         this._ExecutionTime = _ExecutionTime;
@@ -491,8 +502,9 @@ public class DialogueSystem : MonoBehaviour
     private enum State
     {
         None = 0,
-        Win = 1,
-        Win2 = 2,
-        Defeat = 3
+        Win_E = 1,
+        Win_R = 2,
+        Win2 = 3,
+        Defeat = 4
     }
 }

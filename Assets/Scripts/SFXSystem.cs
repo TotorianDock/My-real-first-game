@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SFXSystem : MonoBehaviour
@@ -39,5 +40,17 @@ public class SFXSystem : MonoBehaviour
     {
         _audioSourceSound.UnPause();
         _audioSourceMusic.UnPause();
+    }
+    public IEnumerator SoundErrors()
+    {
+        while (true)
+        {
+            _audioSourceMusic.Pause();
+            _audioSourceSound.Pause();
+            yield return new WaitForSeconds(0.1f);
+            _audioSourceMusic.UnPause();
+            _audioSourceSound.UnPause();
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }

@@ -9,6 +9,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private MotionSystem _motionSystem;
     [SerializeField] private DialogueSystem _dialogueSystem;
     [SerializeField] private SFXFields_Game _sfxFields;
+    [SerializeField] private SFXSystem _sfxSystem;
 
     [Header("Popup Systems")]
     [SerializeField] private PopupSystem _popupSystemA;
@@ -28,8 +29,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private BattleHud _heroHUD;
     [SerializeField] private BattleHud _enemyHUD;
 
-    [Space]
-    public bool isRussianTranslation = false;
+    [HideInInspector] public bool isRussianTranslation = false;
 
     
     private bool _heroIsBlocking = false;
@@ -63,6 +63,9 @@ public class BattleSystem : MonoBehaviour
     private void Awake()
     {
         isRussianTranslation = MenuScript.isRussianTranslation;
+        
+        if (MenuScript.hero != null)
+            _heroPrefab = MenuScript.hero;
         StartCoroutine(SetupBattle());
     }
     private IEnumerator Run()
@@ -213,7 +216,7 @@ public class BattleSystem : MonoBehaviour
             _dialogueSystem.HeroAttack(isRussianTranslation, 1f);
             yield return new WaitForSeconds(1f);
             _enemyAnim.CrossFade(AHurt, 0);
-            _sfxFields.HitSound();
+            _sfxFields.FailedAttackSound();
             _dialogueSystem.AttackFailed1(isRussianTranslation, 2f);
             yield return new WaitForSeconds(2f);
             _enemyAnim.CrossFade(AIdle, 0);
@@ -245,8 +248,10 @@ public class BattleSystem : MonoBehaviour
                 GetExpAndLvl(heroUnit, enemyUnit);
                 if (heroUnit.unitLevel == 99)
                 {
-                    _dialogueSystem.YouWonGame(isRussianTranslation, 7f);
-                    yield return new WaitForSeconds(7f);
+                    //_dialogueSystem.YouWonGame(isRussianTranslation, 7f);
+                    StartCoroutine(_sfxSystem.SoundErrors());
+                    Time.timeScale = 0.1f;
+                    yield return new WaitForSeconds(0.7f);
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
                 }
                 else

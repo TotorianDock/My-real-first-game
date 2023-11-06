@@ -34,6 +34,12 @@ public class MenuScript : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _nameOfTheGame;
     public static bool isRussianTranslation = false;
 
+    [Header("Hero")]
+    public GameObject heroKnightPrefab;
+    [SerializeField] private GameObject _heroWizardPrefab;
+    [SerializeField] private GameObject _heroChangeButtons;
+    public static GameObject hero;
+
     private void Awake()
     {
         if (isRussianTranslation == true)
@@ -65,6 +71,8 @@ public class MenuScript : MonoBehaviour
     }
     private void Start()
     {
+        hero = heroKnightPrefab;
+
         _sliderText.text = Convert.ToString(SFXSystem.MainVolume * 100);
         _slider.value = SFXSystem.MainVolume * 100;
         
@@ -115,15 +123,26 @@ public class MenuScript : MonoBehaviour
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
-        Debug.Log(isFullscreen);
     }
-    public void OnStartButton()
+    public void OnStartButton(bool isPressed)
     {
+        if (_heroChangeButtons.activeInHierarchy == false)
+            _heroChangeButtons.SetActive(isPressed);
+        else
+            _heroChangeButtons.SetActive(!isPressed);
+    }
+    public void OnChangeButtonToKnight()
+    {
+        hero = heroKnightPrefab;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void OnChangeButtonToWizard()
+    {
+        hero = _heroWizardPrefab;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void OnExitButton()
     {
-        Debug.Log("Exit");
         Application.Quit();
     }
     public void OnRussianTranslationButton()

@@ -56,7 +56,7 @@ MonoBehaviour:
   curentMana: -1
   maxExp: -1
   curentExp: -1
-  givesExp: 15
+  givesExp: 10
   missingManaAndExp: 1
   missingCombatButtons: 1
   countOfHeal: 10

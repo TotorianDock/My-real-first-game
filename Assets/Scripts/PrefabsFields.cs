@@ -22,7 +22,7 @@ public class PrefabsFields : MonoBehaviour
     protected Unit _heroUnit;
 
 
-    private int _enemysLevel = 0;
+    private int _enemysLevel = 1;
     private bool _isEnemyDifficult = false;
 
     private void Awake()
@@ -36,33 +36,38 @@ public class PrefabsFields : MonoBehaviour
     {
         _heroUnit = _battleSystem.heroUnit;
     }
+    private void LevelUpAllPrefabsOfFirstStage()
+    {
+        _snakePrefab = _snakeUnit.nextPrefab;
+        _scorpioPrefab = _scorpioUnit.nextPrefab;
+        _hyenaPrefab = _hyenaUnit.nextPrefab;
+    }
     public GameObject RandomEnemyPrefab(Unit heroUnit)
     {
         System.Random random = new();
-        EnemysRegistry enemysRegistry;
+        EnemiesRegistry enemysRegistry;
         int prefabRandomiser = 0;
 
         if (heroUnit.unitLevel <= 5)
         {
             short isEnemyDifficult = (short)random.Next(0, 2);
-            if (isEnemyDifficult == 0)
+            if (isEnemyDifficult == 1)
                 _isEnemyDifficult = true;
             else
                 _isEnemyDifficult = false;
             
             if (_isEnemyDifficult == true)
-                enemysRegistry = EnemysRegistry.Hyena;
+                enemysRegistry = EnemiesRegistry.Hyena;
             else
-                enemysRegistry = (EnemysRegistry)random.Next(0, 2);
+                enemysRegistry = (EnemiesRegistry)random.Next(0, 2);
 
             Start();
 
             if (_enemysLevel < heroUnit.unitLevel && heroUnit.unitLevel < 6)
             {
-                _snakePrefab = _snakeUnit.nextPrefab;
-                _scorpioPrefab = _scorpioUnit.nextPrefab;
-                _hyenaPrefab = _hyenaUnit.nextPrefab;
+                LevelUpAllPrefabsOfFirstStage();
                 _enemysLevel++;
+                    
                 Awake();
             }
         }
@@ -77,11 +82,11 @@ public class PrefabsFields : MonoBehaviour
             //    _isEnemyDifficult = false;
 
             //if (_isEnemyDifficult == true)
-            //    enemysRegistry = EnemysRegistry.Hyena;
+            //    enemysRegistry = EnemiesRegistry.Hyena;
             //else
-            //    enemysRegistry = (EnemysRegistry)random.Next(0, 2);
+            //    enemysRegistry = (EnemiesRegistry)random.Next(0, 2);
             
-            enemysRegistry = (EnemysRegistry)random.Next(3, 4);
+            enemysRegistry = (EnemiesRegistry)random.Next(3, 4);
 
             Start();
 
@@ -93,36 +98,36 @@ public class PrefabsFields : MonoBehaviour
             //}
         }
         else
-            enemysRegistry = EnemysRegistry.Snake;
+            enemysRegistry = EnemiesRegistry.Snake;
 
         if (_enemysLevel == 1)
             prefabRandomiser = random.Next(0, 2);
 
         switch (enemysRegistry)
         {
-            case EnemysRegistry.Snake:
+            case EnemiesRegistry.Snake:
                 return _snakePrefab;
 
-            case EnemysRegistry.Scorpio:
-                if (prefabRandomiser == 0)
+            case EnemiesRegistry.Scorpio:
+                if (prefabRandomiser == 1)
                     return _scorpioPrefab;
                 else
                     return _scorpioUnit.nextPrefab;
 
-            case EnemysRegistry.Hyena:
-                if (heroUnit.unitLevel != 99)
+            case EnemiesRegistry.Hyena:
+                if (prefabRandomiser == 1)
                     return _hyenaPrefab;
                 else
                     return _hyenaUnit.nextPrefab;
 
-            case EnemysRegistry.Vulture:
+            case EnemiesRegistry.Vulture:
                 return _vulturePrefab;
 
             default:
                 return _snakePrefab;
         }
     }
-    private enum EnemysRegistry
+    private enum EnemiesRegistry
     {
         Snake = 0,
         Scorpio = 1,
