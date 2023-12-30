@@ -17,93 +17,85 @@ public class PrefabsFields : MonoBehaviour
     private Unit _hyenaUnit;
 
     [SerializeField] private GameObject _vulturePrefab;
-    //private Unit _vultureUnit;
+    private Unit _vultureUnit;
+
+    [SerializeField] private GameObject _mummyPrefab;
+    private Unit _mummyUnit;
+
+    [SerializeField] private GameObject _deceasedPrefab;
+    private Unit _deceasedUnit;
 
     protected Unit _heroUnit;
 
+    [Header("Wizard")]
+    [SerializeField] private GameObject _wizardPrefab;
 
-    private int _enemysLevel = 1;
-    private bool _isEnemyDifficult = false;
+    [Header("???")]
+    [SerializeField] private GameObject _missingEn;
+
+    private int _enemiesLevel = 1;
+    private int prefabRandomiser = 0;
+    private EnemiesRegistry enemiesRegistry;
+    private readonly System.Random random = new();
 
     private void Awake()
     {
         _snakeUnit = _snakePrefab.GetComponent<Unit>();
         _scorpioUnit = _scorpioPrefab.GetComponent<Unit>();
         _hyenaUnit = _hyenaPrefab.GetComponent<Unit>();
-        //_vultureUnit = _vulturePrefab.GetComponent<Unit>();
+        _vultureUnit = _vulturePrefab.GetComponent<Unit>();
+        _mummyUnit = _mummyPrefab.GetComponent<Unit>();
+        _deceasedUnit = _deceasedPrefab.GetComponent<Unit>();
     }
     private void Start()
     {
         _heroUnit = _battleSystem.heroUnit;
     }
-    private void LevelUpAllPrefabsOfFirstStage()
+    public GameObject RandomEnemyPrefab()
     {
-        _snakePrefab = _snakeUnit.nextPrefab;
-        _scorpioPrefab = _scorpioUnit.nextPrefab;
-        _hyenaPrefab = _hyenaUnit.nextPrefab;
+        switch (_enemiesLevel)
+        {
+            case <= 5:
+                if (RandomDifficult() == true)
+                    enemiesRegistry = EnemiesRegistry.Hyena;
+                else
+                    enemiesRegistry = (EnemiesRegistry)random.Next((int)EnemiesRegistry.Snake, (int)EnemiesRegistry.Scorpio + 1);
+
+                Start();
+                break;
+
+            case <= 10:
+                _motionSystem.SetSecondBackground();
+
+                if (RandomDifficult() == true)
+                    enemiesRegistry = EnemiesRegistry.Deceased;
+                else
+                    enemiesRegistry = (EnemiesRegistry)random.Next((int)EnemiesRegistry.Vulture, (int)EnemiesRegistry.Mummy + 1);
+
+                Start();
+                break;
+
+            case 11:
+                enemiesRegistry = EnemiesRegistry.Wizard;
+                Start();
+                break;
+
+            default:
+                enemiesRegistry = EnemiesRegistry.MissingEn;
+                break;
+        }
+        
+        return GetEnemyPrefab();
     }
-    public GameObject RandomEnemyPrefab(Unit heroUnit)
-    {
-        System.Random random = new();
-        EnemiesRegistry enemysRegistry;
-        int prefabRandomiser = 0;
 
-        if (heroUnit.unitLevel <= 5)
-        {
-            short isEnemyDifficult = (short)random.Next(0, 2);
-            if (isEnemyDifficult == 1)
-                _isEnemyDifficult = true;
-            else
-                _isEnemyDifficult = false;
-            
-            if (_isEnemyDifficult == true)
-                enemysRegistry = EnemiesRegistry.Hyena;
-            else
-                enemysRegistry = (EnemiesRegistry)random.Next(0, 2);
-
-            Start();
-
-            if (_enemysLevel < heroUnit.unitLevel && heroUnit.unitLevel < 6)
-            {
-                LevelUpAllPrefabsOfFirstStage();
-                _enemysLevel++;
-                    
-                Awake();
-            }
-        }
-        else if (heroUnit.unitLevel == 6)
-        {
-            _motionSystem.SetSecondBackground();
-
-            //short isEnemyDifficult = (short)random.Next(0, 2);
-            //if (isEnemyDifficult == 0)
-            //    _isEnemyDifficult = true;
-            //else
-            //    _isEnemyDifficult = false;
-
-            //if (_isEnemyDifficult == true)
-            //    enemysRegistry = EnemiesRegistry.Hyena;
-            //else
-            //    enemysRegistry = (EnemiesRegistry)random.Next(0, 2);
-            
-            enemysRegistry = (EnemiesRegistry)random.Next(3, 4);
-
-            Start();
-
-            //if (_enemysLevel < heroUnit.unitLevel && heroUnit.unitLevel < 6)
-            //{
-            //    _vulturePrefab = _vultureUnit.nextPrefab;
-            //    _enemysLevel++;
-            //    Awake();
-            //}
-        }
-        else
-            enemysRegistry = EnemiesRegistry.Snake;
-
-        if (_enemysLevel == 1)
+    private GameObject GetEnemyPrefab()
+    { 
+        if (_enemiesLevel == 1)
             prefabRandomiser = random.Next(0, 2);
+        else
+            prefabRandomiser = 1;
 
-        switch (enemysRegistry)
+        switch (enemiesRegistry)
         {
             case EnemiesRegistry.Snake:
                 return _snakePrefab;
@@ -123,17 +115,52 @@ public class PrefabsFields : MonoBehaviour
             case EnemiesRegistry.Vulture:
                 return _vulturePrefab;
 
+            case EnemiesRegistry.Mummy: 
+                return _mummyPrefab;
+
+            case EnemiesRegistry.Deceased:
+                return _deceasedPrefab;
+
+            case EnemiesRegistry.Wizard:
+                return _wizardPrefab;
+
             default:
-                return _snakePrefab;
+                return _missingEn;
         }
+    }
+    private bool RandomDifficult()
+    {
+        if ((short)random.Next(0, 2) == 0)
+            return true;
+        else
+            return false;
+    }
+    public void IncreaseEnemiesLevel()
+    {
+        _enemiesLevel++;
+        if (_motionSystem._SecondBackground.activeInHierarchy == false)
+        {
+            _snakePrefab = _snakeUnit.nextPrefab;
+            _scorpioPrefab = _scorpioUnit.nextPrefab;
+            _hyenaPrefab = _hyenaUnit.nextPrefab;
+        }
+        else
+        {
+            _vulturePrefab = _vultureUnit.nextPrefab;
+            _mummyPrefab = _mummyUnit.nextPrefab;
+            _deceasedPrefab = _deceasedUnit.nextPrefab;
+        }
+        Awake();
     }
     private enum EnemiesRegistry
     {
-        Snake = 0,
-        Scorpio = 1,
-        Hyena = 2,
-        Vulture = 3,
-        Mummy = 4,
-        Deceased = 5
+        Snake,
+        Scorpio,
+        Hyena,
+        Vulture,
+        Mummy,
+        Deceased,
+        Wizard,
+        MissingEn
     }
 }

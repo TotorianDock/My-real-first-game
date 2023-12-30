@@ -8,11 +8,11 @@ public class SFXFields_Game : SFXSystem
 	}
 	public void EnemyDeathSound()
 	{
-		PlaySound(sounds[(int)ClipsName.DeathEnemy], 0.3f);
+		PlaySound(sounds[(int)ClipsName.EnemyDeath], 0.3f);
 	}
     public void HeroDeathSound()
     {
-        PlaySound(sounds[(int)ClipsName.DeathHero], 0.3f);
+        PlaySound(sounds[(int)ClipsName.HeroDeath], 0.3f);
     }
 	public void LevelUpSound()
 	{
@@ -60,38 +60,38 @@ public class SFXFields_Game : SFXSystem
 
 	private enum ClipsName
 	{
-		DeathHero = 0,
-		DeathEnemy = 1,
+		HeroDeath,
+		EnemyDeath,
 		
-		LevelUp1 = 2,
-		LevelUp2 = 3,
+		LevelUp1,
+		LevelUp2,
 		
-		BatleMusic1 = 4,
-        BatleMusic2 = 5,
-        BatleMusic3 = 6,
-		BatleMusic4 = 7,
+		BatleMusic1,
+        BatleMusic2,
+        BatleMusic3,
+		BatleMusic4,
 		
-		FinalBatle1 = 8,
-		FinalBatle2 = 9,
+		FinalBatle1,
+		FinalBatle2,
 		
-		Hit1 = 10,
-		Hit2 = 11,
-		Hit3 = 12,
-		Hit4 = 13,
-		Hit5 = 14,
-		Hit6 = 15,
-		Hit7 = 16,
-		Hit8 = 17,
-		Hit9 = 18,
+		Hit1,
+		Hit2,
+		Hit3,
+		Hit4,
+		Hit5,
+		Hit6,
+		Hit7,
+		Hit8,
+		Hit9,
 
-		Heal = 19,
-		Block = 20,
-		Debuff = 21,
+		Heal,
+		Block,
+		Debuff,
 
-        ShieldUp1 = 22,
-		ShieldUp2 = 23,
+        ShieldUp1,
+		ShieldUp2,
 
-		FailedAttack1 = 24,
-		FailedAttack2 = 25
+		FailedAttack1,
+		FailedAttack2
 	}
 }

@@ -29,14 +29,19 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private BattleHud _heroHUD;
     [SerializeField] private BattleHud _enemyHUD;
 
-    [HideInInspector] public bool isRussianTranslation = false;
-
     
+    [Header("Other")]
+
+    [SerializeField] private GameObject _InstaKillButton;
+
+    [HideInInspector] public bool isRussianTranslation;
+
+
     private bool _heroIsBlocking = false;
     private bool _enemyIsBlocking = false;
 
     [HideInInspector] public Unit heroUnit;
-    protected Unit enemyUnit;
+    protected Unit _enemyUnit;
 
     private Animator _heroAnim;
     private Animator _enemyAnim;
@@ -52,7 +57,7 @@ public class BattleSystem : MonoBehaviour
     private readonly int ADied = Animator.StringToHash("Died");
 
     [HideInInspector] public BattleState state = BattleState.START;
-    
+
     private bool _didEnemyBlock = false;
     private bool _didEnemyHeal = false;
 
@@ -60,13 +65,14 @@ public class BattleSystem : MonoBehaviour
 
     protected bool _locationHasChanged = false;
 
+
     private void Awake()
     {
         isRussianTranslation = MenuScript.isRussianTranslation;
         
         if (MenuScript.hero != null)
             _heroPrefab = MenuScript.hero;
-        StartCoroutine(SetupBattle());
+        SetupBattle();
     }
     private IEnumerator Run()
     {
@@ -86,94 +92,100 @@ public class BattleSystem : MonoBehaviour
         _enemyAnim.CrossFade(AIdle, 0);
         _heroAnim.CrossFade(AIdle, 0);
     }
-    private IEnumerator SetupBattle()
+    private void SetupBattle()
     {
-        if(heroUnit.unitLevel != 6)
+        if (heroUnit.unitLevel < 10)
             _sfxFields.BatleMusic();
         else
             _sfxFields.FinalBatleMusic();
         
         if (state != BattleState.WON)
-        {
-            GameObject heroGO = Instantiate(_heroPrefab, _heroBattleStation);
-            heroUnit = heroGO.GetComponent<Unit>();
-
-            _heroAnim = heroUnit.animator;
-            _heroAnim.CrossFade(AIdle, 0);
-            _heroHUD.SetHUD(heroUnit, isRussianTranslation, heroUnit.missingCombatButtons);
-
-            GameObject enemyGO = Instantiate(_enemyPrefab, _enemyBattleStation);
-            enemyUnit = enemyGO.GetComponent<Unit>();
-
-            _enemyAnim = enemyUnit.animator;
-            _enemyAnim.CrossFade(AIdle, 0);
-
-            _enemyHUD.SetHUD(enemyUnit, isRussianTranslation, enemyUnit.missingCombatButtons);
-
-            StartCoroutine(Run());
-
-            _dialogueSystem.EnemyApproaches(enemyUnit, isRussianTranslation, 5f);
-            yield return new WaitForSeconds(5f);
-
-            PlayerTurn();
-        }
+            StartCoroutine(SBStart());
         else
-        {
-            _enemyPrefab = _prefabsFields.RandomEnemyPrefab(heroUnit);
-            _heroHUD.SetHUD(heroUnit, isRussianTranslation, heroUnit.missingCombatButtons);
-            _motionSystem.ResetEnemyStation(_locationHasChanged);
-            Destroy(enemyUnit.gameObject);
-
-            if(_movementCounter == 2)
-            {
-                _motionSystem.ResetBackground(_locationHasChanged);
-                _movementCounter = 0;
-            }
-            
-            GameObject enemyGO = Instantiate(_enemyPrefab, _enemyBattleStation);
-            enemyUnit = enemyGO.GetComponent<Unit>();
-
-            _enemyAnim = enemyUnit.animator;
-            _enemyAnim.CrossFade(AIdle, 0);
-
-            _enemyHUD.SetHUD(enemyUnit, isRussianTranslation, enemyUnit.missingCombatButtons);
-
-            _movementCounter++;
-
-            StartCoroutine(Run());
-
-            if (_motionSystem._SecondBackground.activeInHierarchy == true && _locationHasChanged == false)
-            {
-                yield return new WaitForSeconds(11f);
-                _dialogueSystem.EnemyApproaches(enemyUnit, isRussianTranslation, 3f);
-                yield return new WaitForSeconds(3f);
-            }
-            else
-            {
-                yield return new WaitForSeconds(2f);
-                _dialogueSystem.EnemyApproaches(enemyUnit, isRussianTranslation, 2.5f);
-                yield return new WaitForSeconds(2.5f);
-            }
-            
-            PlayerTurn();
-        }
+            StartCoroutine(SBDuringTheAction());
     }
-    public void SetHeroPrefab(short HCE)
+    private IEnumerator SBStart()
     {
-        _heroPrefab = heroUnit.nextPrefab;
-        Destroy(heroUnit.gameObject);
         GameObject heroGO = Instantiate(_heroPrefab, _heroBattleStation);
         heroUnit = heroGO.GetComponent<Unit>();
 
         _heroAnim = heroUnit.animator;
         _heroAnim.CrossFade(AIdle, 0);
         _heroHUD.SetHUD(heroUnit, isRussianTranslation, heroUnit.missingCombatButtons);
-        heroUnit.curentExp = HCE;
+
+        GameObject enemyGO = Instantiate(_enemyPrefab, _enemyBattleStation);
+        _enemyUnit = enemyGO.GetComponent<Unit>();
+
+        _enemyAnim = _enemyUnit.animator;
+        _enemyAnim.CrossFade(AIdle, 0);
+
+        _enemyHUD.SetHUD(_enemyUnit, isRussianTranslation, _enemyUnit.missingCombatButtons);
+
+        StartCoroutine(Run());
+
+        _dialogueSystem.EnemyApproaches(_enemyUnit, isRussianTranslation, 5f);
+        yield return new WaitForSeconds(5f);
+
+        PlayerTurn();
+    }
+    private IEnumerator SBDuringTheAction()
+    {
+        _enemyPrefab = _prefabsFields.RandomEnemyPrefab();
+        _heroHUD.SetHUD(heroUnit, isRussianTranslation, heroUnit.missingCombatButtons);
+        _motionSystem.ResetEnemyStation(_locationHasChanged);
+        Destroy(_enemyUnit.gameObject);
+
+        if (_movementCounter == 2)
+        {
+            _motionSystem.ResetBackground(_locationHasChanged);
+            _movementCounter = 0;
+        }
+
+        GameObject enemyGO = Instantiate(_enemyPrefab, _enemyBattleStation);
+        _enemyUnit = enemyGO.GetComponent<Unit>();
+
+        _enemyAnim = _enemyUnit.animator;
+        _enemyAnim.CrossFade(AIdle, 0);
+
+        _enemyHUD.SetHUD(_enemyUnit, isRussianTranslation, _enemyUnit.missingCombatButtons);
+
+        _movementCounter++;
+
+        StartCoroutine(Run());
+
+        if (_motionSystem._SecondBackground.activeInHierarchy == true && _locationHasChanged == false)
+        {
+            yield return new WaitForSeconds(11f);
+            _dialogueSystem.EnemyApproaches(_enemyUnit, isRussianTranslation, 3f);
+            yield return new WaitForSeconds(3f);
+        }
+        else
+        {
+            yield return new WaitForSeconds(2f);
+            _dialogueSystem.EnemyApproaches(_enemyUnit, isRussianTranslation, 2.5f);
+            yield return new WaitForSeconds(2.5f);
+        }
+
+        PlayerTurn();
+    }
+    public void SetHeroPrefab(short heroCurentExp)
+    {
+        _heroPrefab = heroUnit.nextPrefab;
+        Destroy(heroUnit.gameObject);
+        GameObject heroGO = Instantiate(_heroPrefab, _heroBattleStation);
+        heroUnit = heroGO.GetComponent<Unit>();
+        _prefabsFields.IncreaseEnemiesLevel();
+
+        _heroAnim = heroUnit.animator;
+        _heroAnim.CrossFade(AIdle, 0);
+        _heroHUD.SetHUD(heroUnit, isRussianTranslation, heroUnit.missingCombatButtons);
+        heroUnit.curentExp = heroCurentExp;
         _heroHUD.SetExpAndLvl(heroUnit, isRussianTranslation);
     }
-    public void GetExpAndLvl(Unit hero, Unit enemy)
+    private void GetExpAndLvl(Unit hero, Unit enemy)
     {
         short receivedExp = enemy.givesExp;
+        short heroCurentExp;
 
         if (receivedExp >= hero.maxExp - hero.curentExp)
         {
@@ -185,14 +197,14 @@ public class BattleSystem : MonoBehaviour
                 {
                     hero.unitLevel++;
                     receivedExp -= hero.maxExp;
-                    short HCE = receivedExp;
-                    SetHeroPrefab(HCE);
+                    heroCurentExp = receivedExp;
+                    SetHeroPrefab(heroCurentExp);
                 }
             }
             else
             {
-                short HCE = receivedExp;
-                SetHeroPrefab(HCE);
+                heroCurentExp = receivedExp;
+                SetHeroPrefab(heroCurentExp);
             }
         }
         else
@@ -207,12 +219,12 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.ACTIONTIME; 
         _heroAnim.CrossFade(AAttack, 0);
-        _heroAnim.CrossFade(AIdle, 0);
         if (_enemyIsBlocking)
         {
             _enemyIsBlocking = false;
             _popupSystemI.object3IsActive = false;
 
+            _heroAnim.CrossFade(AIdle, 0);
             _dialogueSystem.HeroAttack(isRussianTranslation, 1f);
             yield return new WaitForSeconds(1f);
             _enemyAnim.CrossFade(AHurt, 0);
@@ -223,53 +235,26 @@ public class BattleSystem : MonoBehaviour
             _dialogueSystem.AttackFailed2(isRussianTranslation, 2f);
             yield return new WaitForSeconds(2f);
 
-            EnemyTurnAndEnemyAI(enemyUnit);
+            EnemyTurn(_enemyUnit);
         }
         else
         {
             _enemyAnim.CrossFade(AHurt, 0);
             _sfxFields.HitSound();
-            bool isDead = enemyUnit.TakeDamage(heroUnit.damage);
+            bool isDead = _enemyUnit.TakeDamage(heroUnit.damage);
 
-            _enemyHUD.RemoveHP(enemyUnit.curentHP, enemyUnit, isDead);
+            _enemyHUD.RemoveHP(_enemyUnit.curentHP, _enemyUnit, isDead);
             _dialogueSystem.AttackSuccessful(isRussianTranslation, 2f);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.1f);
+            _enemyAnim.CrossFade(AIdle, 0);
+            yield return new WaitForSeconds(0.9f);
 
             if (isDead)
-            {
-                _enemyAnim.CrossFade(ADeath, 0);
-                _heroAnim.CrossFade(AIdle, 0);
-                _dialogueSystem.EnemyIsDead(enemyUnit, isRussianTranslation, 2f);
-                yield return new WaitForSeconds(2f);
-                _enemyAnim.CrossFade(ADied, 0);
-                _sfxFields.EnemyDeathSound();
-                yield return new WaitForSeconds(0.5f);
-
-                GetExpAndLvl(heroUnit, enemyUnit);
-                if (heroUnit.unitLevel == 99)
-                {
-                    //_dialogueSystem.YouWonGame(isRussianTranslation, 7f);
-                    StartCoroutine(_sfxSystem.SoundErrors());
-                    Time.timeScale = 0.1f;
-                    yield return new WaitForSeconds(0.7f);
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-                }
-                else
-                {
-                    _dialogueSystem.YouWonBattle(isRussianTranslation, 1f);
-                    state = BattleState.WON;
-                    yield return new WaitForSeconds(1f);
-
-                    _heroAnim.CrossFade(ARun, 0);
-
-                    StartCoroutine(SetupBattle());
-                }
-            }
+                StartCoroutine(EnemyDied());
             else
             {
-                _enemyAnim.CrossFade(AIdle, 0);
                 _heroAnim.CrossFade(AIdle, 0);
-                EnemyTurnAndEnemyAI(enemyUnit);
+                EnemyTurn(_enemyUnit);
             }
         }
     }
@@ -286,7 +271,7 @@ public class BattleSystem : MonoBehaviour
         _dialogueSystem.YouHealed(isRussianTranslation, 2f);
 
         yield return new WaitForSeconds(2f);
-        EnemyTurnAndEnemyAI(enemyUnit);
+        EnemyTurn(_enemyUnit);
     }
     private IEnumerator HeroBlock()
     {
@@ -299,7 +284,7 @@ public class BattleSystem : MonoBehaviour
         _heroAnim.CrossFade(ABlockIdle, 0);
 
         yield return new WaitForSeconds(2f);
-        EnemyTurnAndEnemyAI(enemyUnit);
+        EnemyTurn(_enemyUnit);
     }
 
     private void PlayerTurn()
@@ -309,6 +294,40 @@ public class BattleSystem : MonoBehaviour
         _heroAnim.CrossFade(AIdle, 0);
         _enemyAnim.CrossFade(AIdle, 0);
         _dialogueSystem.ChooseAnAction(isRussianTranslation, 2f);
+        _InstaKillButton.SetActive(true);
+    }
+    public IEnumerator EnemyDied()
+    {
+        _enemyUnit.curentHP = 0;
+        _enemyHUD.SetHUD(_enemyUnit, isRussianTranslation, _enemyUnit.missingCombatButtons);
+
+        _enemyAnim.CrossFade(ADeath, 0);
+        _heroAnim.CrossFade(AIdle, 0);
+        _dialogueSystem.EnemyIsDead(_enemyUnit, isRussianTranslation, 2f);
+        yield return new WaitForSeconds(2f);
+        _enemyAnim.CrossFade(ADied, 0);
+        _sfxFields.EnemyDeathSound();
+        yield return new WaitForSeconds(0.5f);
+
+        GetExpAndLvl(heroUnit, _enemyUnit);
+        if (heroUnit.unitLevel == 99)
+        {
+            _dialogueSystem.YouWonGame(isRussianTranslation, 7f);
+            //StartCoroutine(_sfxSystem.SoundErrors());
+            //Time.timeScale = 0.1f;
+            yield return new WaitForSeconds(7f);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        }
+        else
+        {
+            _dialogueSystem.YouWonBattle(isRussianTranslation, 1f);
+            state = BattleState.WON;
+            yield return new WaitForSeconds(1f);
+
+            _heroAnim.CrossFade(ARun, 0);
+
+            SetupBattle();
+        }
     }
     private IEnumerator EnemyAttack()
     {
@@ -317,9 +336,10 @@ public class BattleSystem : MonoBehaviour
         {
             _heroIsBlocking = false;
 
-            _dialogueSystem.EnemyAttackFail(enemyUnit, isRussianTranslation, 2f);
-            yield return new WaitForSeconds(2f);
+            _dialogueSystem.EnemyAttackFail(_enemyUnit, isRussianTranslation, 2f);
+            yield return new WaitForSeconds(1.9f);
             _enemyAnim.CrossFade(AIdle, 0);
+            yield return new WaitForSeconds(0.1f);
             _dialogueSystem.YouBlock(isRussianTranslation, 2f);
             _heroAnim.CrossFade(ABlockingAttack, 0);
             _sfxFields.BlockSound();
@@ -331,17 +351,18 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            _dialogueSystem.EnemyAttackSuccesful(enemyUnit, isRussianTranslation, 2f);
+            _dialogueSystem.EnemyAttackSuccesful(_enemyUnit, isRussianTranslation, 2f);
 
-            bool isDead = heroUnit.TakeDamage(enemyUnit.damage);
+            bool isDead = heroUnit.TakeDamage(_enemyUnit.damage);
             _heroHUD.RemoveHP(heroUnit.curentHP, heroUnit, isDead);
             _heroAnim.CrossFade(AHurt, 0);
             _sfxFields.HitSound();
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.1f);
             _heroAnim.CrossFade(AIdle, 0);
             _enemyAnim.CrossFade(AIdle, 0);
-
+            yield return new WaitForSeconds(0.9f);
+            
             if (isDead)
             {
                 _heroAnim.CrossFade(ADeath, 0);
@@ -355,25 +376,23 @@ public class BattleSystem : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
             }
             else
-            {
                 PlayerTurn();
-            }
         }
     }
     private IEnumerator EnemyHeal()
     {
-        _dialogueSystem.EnemyHealed1(enemyUnit, isRussianTranslation, 2f);
+        _dialogueSystem.EnemyHealed1(_enemyUnit, isRussianTranslation, 2f);
         yield return new WaitForSeconds(2f);
-        
-        _dialogueSystem.EnemyHealed2(isRussianTranslation, enemyUnit, 2f);
+        _dialogueSystem.EnemyHealed2(isRussianTranslation, _enemyUnit, 2f);
         
         _enemyAnim.CrossFade(AHeal, 0);
         _sfxFields.HealSound();
-        enemyUnit.Heal(enemyUnit.countOfHeal);
-        _enemyHUD.AddHP(enemyUnit.curentHP, enemyUnit);
+        _enemyUnit.Heal(_enemyUnit.countOfHeal);
+        _enemyHUD.AddHP(_enemyUnit.curentHP, _enemyUnit);
+        yield return new WaitForSeconds(1f);
         _enemyAnim.CrossFade(AIdle, 0);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         PlayerTurn();
     }
     private IEnumerator EnemyBlock()
@@ -381,55 +400,36 @@ public class BattleSystem : MonoBehaviour
         _enemyIsBlocking = true;
         _popupSystemI.object3IsActive = true;
 
-        _dialogueSystem.EnemyReadyToBlock1(enemyUnit, isRussianTranslation, 2.5f);
+        _dialogueSystem.EnemyReadyToBlock1(_enemyUnit, isRussianTranslation, 2.5f);
         yield return new WaitForSeconds(2.5f);
-        _dialogueSystem.EnemyReadyToBlock2(isRussianTranslation, enemyUnit, 2.5f);
+        _dialogueSystem.EnemyReadyToBlock2(isRussianTranslation, _enemyUnit, 2.5f);
 
         _sfxFields.DebuffSound();
         yield return new WaitForSeconds(2.5f);
 
         PlayerTurn();
     }
-    private void EnemyTurnAndEnemyAI(Unit enemyUnit)
+    private void EnemyTurn(Unit enemyUnit)
     {
         state = BattleState.ENEMYTURN;
         _enemyIsBlocking = false;
-        int AICounter;
-        System.Random random = new();
-
-        if ((enemyUnit.curentHP == enemyUnit.maxHP || enemyUnit.countOfHeal >= heroUnit.damage) && !_didEnemyBlock)
+        ChoiseOfAction choiseOfAction = EnemyAI(enemyUnit);
+        
+        switch (choiseOfAction)
         {
-            AICounter = random.Next(0, 2);
-        }
-        else if (_didEnemyHeal && enemyUnit.countOfHeal < heroUnit.damage)
-        {
-            AICounter = random.Next(0, 3);
-        }
-        else if (_didEnemyBlock)
-        {
-            if (enemyUnit.countOfHeal >= heroUnit.damage || enemyUnit.curentHP == enemyUnit.maxHP)
-                AICounter = 1;
-            else
-                AICounter = random.Next(1, 3);
-        }
-        else
-            AICounter = random.Next(0, 3);
-
-        switch (AICounter)
-        {
-            case 0:
+            case ChoiseOfAction.Attack:
                 _didEnemyBlock = true;
                 _didEnemyHeal = false;
                 StartCoroutine(EnemyBlock());
                 break;
             
-            case 1:
+            case ChoiseOfAction.Heal:
                 _didEnemyBlock = false;
                 _didEnemyHeal = false;
                 StartCoroutine(EnemyAttack());
                 break;
             
-            case 2:
+            case ChoiseOfAction.Block:
                 _didEnemyHeal = true;
                 _didEnemyBlock = false;
                 StartCoroutine(EnemyHeal());
@@ -438,6 +438,28 @@ public class BattleSystem : MonoBehaviour
             default:
                 throw new System.Exception();
         }
+    }
+    private ChoiseOfAction EnemyAI(Unit enemyUnit)
+    {
+        System.Random random = new();
+
+        if ((enemyUnit.curentHP == enemyUnit.maxHP || enemyUnit.countOfHeal >= heroUnit.damage) && !_didEnemyBlock)
+        {
+            return (ChoiseOfAction)random.Next((int)ChoiseOfAction.Attack, (int)ChoiseOfAction.Heal + 1);
+        }
+        else if (_didEnemyHeal && enemyUnit.countOfHeal < heroUnit.damage)
+        {
+            return (ChoiseOfAction)random.Next((int)ChoiseOfAction.Attack, (int)ChoiseOfAction.Block + 1);
+        }
+        else if (_didEnemyBlock)
+        {
+            if (enemyUnit.countOfHeal >= heroUnit.damage || enemyUnit.curentHP == enemyUnit.maxHP)
+                return ChoiseOfAction.Heal;
+            else
+                return (ChoiseOfAction)random.Next((int)ChoiseOfAction.Heal, (int)ChoiseOfAction.Block + 1);
+        }
+        else
+            return (ChoiseOfAction)random.Next((int)ChoiseOfAction.Attack, (int)ChoiseOfAction.Block + 1);
     }
     public void OnAttackButton()
     {
@@ -471,4 +493,10 @@ public enum BattleState
     ACTIONTIME,
     ENEMYTURN,
     WON
+}
+public enum ChoiseOfAction
+{
+    Attack,
+    Heal,
+    Block
 }

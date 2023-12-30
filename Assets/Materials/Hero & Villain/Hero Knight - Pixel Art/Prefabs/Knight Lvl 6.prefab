@@ -147,8 +147,8 @@ MonoBehaviour:
   costOfHeal: 5
   costOfBlock: 10
   animator: {fileID: 7949702441031900432}
-  nextPrefab: {fileID: 4759492222819021622, guid: de95c63303b8efb419142d58f1967436, type: 3}
-  enemyName: 0
+  nextPrefab: {fileID: 4759492222819021622, guid: 945165bbc452dd94591bc415d9bbf53c, type: 3}
+  enemyName: 7
 --- !u!95 &7949702441031900432
 Animator:
   serializedVersion: 4

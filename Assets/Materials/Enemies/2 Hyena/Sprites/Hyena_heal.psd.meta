@@ -117,27 +117,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Hyena_heal_0
-      rect:
-        serializedVersion: 2
-        x: 6
-        y: 29
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 903a078b3eac19d4298e0d55c1917a02
-      internalID: -1666711552
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Hyena_heal_1
       rect:
         serializedVersion: 2
@@ -146,7 +125,7 @@ TextureImporter:
         width: 47
         height: 37
       alignment: 9
-      pivot: {x: 0.48314822, y: 0.46298698}
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -159,27 +138,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hyena_heal_2
-      rect:
-        serializedVersion: 2
-        x: 25
-        y: 29
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c873c37d41d99f944a57db15b9798e4c
-      internalID: 1231382471
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Hyena_heal_3
       rect:
         serializedVersion: 2
@@ -187,8 +145,8 @@ TextureImporter:
         y: 2
         width: 33
         height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: 0.5, y: 0.3}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

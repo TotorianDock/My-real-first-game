@@ -7,7 +7,7 @@ using System;
 
 public class MenuScript : MonoBehaviour
 {
-    [Header ("Slider")]
+    [Header("Slider")]
     [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _sliderText;
 
@@ -20,7 +20,7 @@ public class MenuScript : MonoBehaviour
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
     [SerializeField] private TextMeshProUGUI _resolutionText;
     private Resolution[] _resolutions;
-        
+
     [Header("Options")]
     [SerializeField] private TextMeshProUGUI _backButtonText;
     [SerializeField] private TextMeshProUGUI _startButtonText;
@@ -39,6 +39,10 @@ public class MenuScript : MonoBehaviour
     [SerializeField] private GameObject _heroWizardPrefab;
     [SerializeField] private GameObject _heroChangeButtons;
     public static GameObject hero;
+
+    [Header("Other")]
+    [SerializeField] private GameObject _loadingScreen;
+
 
     private void Awake()
     {
@@ -77,7 +81,12 @@ public class MenuScript : MonoBehaviour
         _slider.value = SFXSystem.MainVolume * 100;
         
         _sfxFields.MenuMusic();
-        _fulllscreenToggle.isOn = Screen.fullScreen;
+        Screen.fullScreen = _fulllscreenToggle.isOn;
+        if (!_fulllscreenToggle.isOn)
+        {
+            Resolution resolution = Screen.currentResolution;
+            Screen.SetResolution(resolution.width, resolution.height, _fulllscreenToggle.isOn);
+        }
 
         _resolutions = Screen.resolutions;
         _resolutionDropdown.ClearOptions();
@@ -123,6 +132,11 @@ public class MenuScript : MonoBehaviour
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
+        if (!isFullscreen)
+        {
+            Resolution resolution = Screen.currentResolution;
+            Screen.SetResolution(resolution.width, resolution.height, isFullscreen);
+        }
     }
     public void OnStartButton(bool isPressed)
     {
@@ -133,11 +147,13 @@ public class MenuScript : MonoBehaviour
     }
     public void OnChangeButtonToKnight()
     {
+        _loadingScreen.SetActive(true);
         hero = heroKnightPrefab;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     public void OnChangeButtonToWizard()
     {
+        _loadingScreen.SetActive(true);
         hero = _heroWizardPrefab;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

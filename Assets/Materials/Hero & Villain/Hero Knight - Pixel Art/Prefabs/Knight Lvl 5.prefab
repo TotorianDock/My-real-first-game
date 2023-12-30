@@ -148,7 +148,7 @@ MonoBehaviour:
   costOfBlock: 10
   animator: {fileID: 7949702441031900432}
   nextPrefab: {fileID: 4759492222819021622, guid: 63ef5086d73d09747b69b0e9e228ac2a, type: 3}
-  enemyName: 0
+  enemyName: 7
 --- !u!95 &7949702441031900432
 Animator:
   serializedVersion: 4

@@ -9,6 +9,8 @@ public class BattleHud : MonoBehaviour
     [SerializeField] private MotionSystem _motionSystem;
     [SerializeField] private ShadingSystem _shadingScript;
 
+    [Header("HUDs")]
+
     [Header("Name & Level")]
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _levelText;
@@ -38,153 +40,52 @@ public class BattleHud : MonoBehaviour
 
     [Header("Explanation")]
 
-    [Header("Damage & Attack")]
-    [SerializeField] private TextMeshProUGUI E_dealsText;
-    [SerializeField] private TextMeshProUGUI E_countOfAttackText;
-    [SerializeField] private TextMeshProUGUI E_damageText;
+    [Header("Attack Button")]
+    [SerializeField] private TextMeshProUGUI E_attackButton;
 
-    [Header("Health")]
-    [SerializeField] private TextMeshProUGUI E_healsText;
-    [SerializeField] private TextMeshProUGUI E_countOfHeal;
-    [SerializeField] private TextMeshProUGUI E_hpText;
-    [SerializeField] private TextMeshProUGUI E_costTextH;
-    [SerializeField] private TextMeshProUGUI E_costOfHealText;
-    [SerializeField] private TextMeshProUGUI E_manaTextH;
+    [Header("Heal Button")]
+    [SerializeField] private TextMeshProUGUI E_healButton;
+    [SerializeField] private TextMeshProUGUI E_healButton_Cost;
 
-    [Header("Block")]
+    [Header("Block Button")]
     [SerializeField] private TextMeshProUGUI E_blockTextRu;
     [SerializeField] private TextMeshProUGUI E_blockTextEn;
-    [SerializeField] private TextMeshProUGUI E_costTextB;
-    [SerializeField] private TextMeshProUGUI E_countOfManaTextB;
-    [SerializeField] private TextMeshProUGUI E_manaTextB;
+    [SerializeField] private TextMeshProUGUI E_blockButton_Cost;
 
-    [Header("Information")]
-
-    [Header("Damage")]
-    [SerializeField] private TextMeshProUGUI I_dealsText;
-    [SerializeField] private TextMeshProUGUI I_dealsDamageText;
-    [SerializeField] private TextMeshProUGUI I_damageText;
-
-    [Header("Health")]
-    [SerializeField] private TextMeshProUGUI I_healsText;
-    [SerializeField] private TextMeshProUGUI I_healsHealthTextE;
-    [SerializeField] private TextMeshProUGUI I_healsHealthTextR;
-    [SerializeField] private TextMeshProUGUI I_healthText;
-
-    [Header("Experience")]
-    [SerializeField] private TextMeshProUGUI I_givesText;
-    [SerializeField] private TextMeshProUGUI I_givesExpText;
-    [SerializeField] private TextMeshProUGUI I_expText;
+    [Header("Information About")]
 
     [Header("Block")]
     [SerializeField] private TextMeshProUGUI I_blockTextE;
     [SerializeField] private TextMeshProUGUI I_blockTextR;
 
+    [Header("Dmg & Healing & Exp")]
+    [SerializeField] private TextMeshProUGUI InformationAboutDmg;
+    [SerializeField] private TextMeshProUGUI InformationAboutHealing;
+    [SerializeField] private TextMeshProUGUI InformationAboutExp;
+
     public void SetHUD(Unit unit, bool isRussianTranslation, bool missingCombatButtons)
     {
         if (_motionSystem._SecondBackground.activeInHierarchy == true)
             _shadingScript.SetShading();
-        if (!missingCombatButtons)
-        {
-            E_countOfAttackText.text = Convert.ToString(unit.damage);
-            E_countOfHeal.text = Convert.ToString(unit.countOfHeal);
-            E_costOfHealText.text = Convert.ToString(unit.costOfHeal);
-            E_countOfManaTextB.text = Convert.ToString(unit.costOfBlock);
-
-            E_countOfAttackText.text = Convert.ToString(unit.damage);
-            E_countOfHeal.text = Convert.ToString(unit.countOfHeal);
-            E_costOfHealText.text = Convert.ToString(unit.costOfHeal);
-            E_countOfManaTextB.text = Convert.ToString(unit.costOfBlock);
-
-            E_countOfAttackText.text = Convert.ToString(unit.damage);
-            E_countOfHeal.text = Convert.ToString(unit.countOfHeal);
-            E_costOfHealText.text = Convert.ToString(unit.costOfHeal);
-            E_countOfManaTextB.text = Convert.ToString(unit.costOfBlock);
-        }
-        else
-        {
-            I_dealsDamageText.text = Convert.ToString(unit.damage);
-            I_givesExpText.text = Convert.ToString(unit.givesExp);
-        }
         if (isRussianTranslation)
         {
             _nameText.text = unit.unitNameRU;
             _levelText.text = "Ур " + unit.unitLevel;
-            if (!missingCombatButtons)
-            {
-                _attackButtonText.text = "Атака";
-                _healButtonText.text = "Лечение";
-                _blockButtonText.text = "Блок";
-
-                E_dealsText.text = "Наносит";
-                E_damageText.text = "урона";
-
-                E_healsText.text = "Лечит";
-                E_hpText.text = "ОЗ";
-                E_costTextH.text = "Стоит";
-                E_manaTextH.text = "маны";
-
-                E_blockTextEn.text = string.Empty;
-                E_blockTextRu.text = "Блокирует следующую атаку врага";
-                E_costTextB.text = "Стоит";
-                E_manaTextB.text = "маны";
-            }
+            
+            if (missingCombatButtons)
+                SetEnemyInformationRus(unit);
             else
-            {
-                I_healsHealthTextR.text = Convert.ToString(unit.countOfHeal);
-
-                I_dealsText.text = "Наносит";
-                I_damageText.text = "урона";
-
-                I_healsText.text = "Лечится на";
-                I_healthText.text = "ОЗ";
-
-                I_givesText.text = "Даёт";
-                I_expText.text = "ОП";
-
-                I_blockTextE.text = string.Empty;
-                I_blockTextR.text = "Ваша следующая атака провалиться!";
-            }
+                SetBattleButtonsRus(unit);
         }
         else
         {
             _nameText.text = unit.unitNameENG;
             _levelText.text = "Lvl " + unit.unitLevel;
-            if (!missingCombatButtons)
-            {
-                _attackButtonText.text = "Attack";
-                _healButtonText.text = "Heal";
-                _blockButtonText.text = "Block";
-
-                E_dealsText.text = "Deals";
-                E_damageText.text = "damage";
-
-                E_healsText.text = "Heals";
-                E_hpText.text = "HP";
-                E_costTextH.text = "Cost";
-                E_manaTextH.text = "mana";
-
-                E_blockTextRu.text = string.Empty;
-                E_blockTextEn.text = "Blocks next enemy attack";
-                E_costTextB.text = "Cost";
-                E_manaTextB.text = "mana";
-            }
+            
+            if (missingCombatButtons)
+                SetEnemyInformationEng(unit);
             else
-            {
-                I_healsHealthTextE.text = Convert.ToString(unit.countOfHeal);
-
-                I_dealsText.text = "Deals";
-                I_damageText.text = "damage";
-
-                I_healsText.text = "Heals";
-                I_healthText.text = "HP";
-
-                I_givesText.text = "Gives";
-                I_expText.text = "Exp";
-
-                I_blockTextR.text = string.Empty;
-                I_blockTextE.text = "Your next attack will fail!";
-            }
+                SetBattleButtonsEng(unit);
         }
 
         _curentHPText.text = Convert.ToString(unit.curentHP);
@@ -200,30 +101,135 @@ public class BattleHud : MonoBehaviour
 
         if (!unit.missingManaAndExp)
         {
+            if (isRussianTranslation)
+            {
+                _manaText.text = "Мана";
+                _expText.text = "ОП";
+            }
+            else
+            {
+                _manaText.text = "Mana";
+                _expText.text = "Exp";
+            }
+
             _curentManaText.text = Convert.ToString(unit.curentMana);
             _maxManaText.text = Convert.ToString(unit.maxMana);
 
             _manaSlider.maxValue = unit.maxMana;
             _manaSlider.value = unit.curentMana;
 
-            if (isRussianTranslation)
-                _manaText.text = "Мана";
-            else
-                _manaText.text = "Mana";
-            
             _curentExpText.text = Convert.ToString(unit.curentExp);
             _maxExpText.text = Convert.ToString(unit.maxExp);
 
             _expSlider.maxValue = unit.maxExp;
             _expSlider.value = unit.curentExp;
-
-            if (isRussianTranslation)
-                _expText.text = "ОП";
-            else
-                _expText.text = "Exp";
         }
     }
+    private void SetBattleButtonsRus(Unit unit)
+    {
+        _attackButtonText.text = "Атака";
+        _healButtonText.text = "Лечение";
+        _blockButtonText.text = "Блок";
 
+        E_attackButton.text = unit.damage switch
+        {
+            >= 100 => $"Наносит {unit.damage} урона",
+            >= 10 => $"Наносит {unit.damage} урона",
+            < 10 => $"Наносит  {unit.damage} урона"
+        };
+
+        E_healButton.text = $"Лечит {unit.countOfHeal} ОЗ";
+        E_healButton_Cost.text = unit.costOfHeal switch
+        {
+            >= 10 => $"Стоит {unit.costOfHeal} маны",
+            < 10 => $"Стоит  {unit.costOfHeal} маны"
+        };
+
+        E_blockTextEn.text = string.Empty;
+        E_blockTextRu.text = "Блокирует следующую атаку врага";
+
+        E_blockButton_Cost.text = unit.costOfBlock switch
+        {
+            >= 10 => $"Стоит {unit.costOfBlock} маны",
+            < 10 => $"Стоит {unit.costOfBlock} маны"
+        };
+    }
+    private void SetBattleButtonsEng(Unit unit)
+    {
+        _attackButtonText.text = "Attack";
+        _healButtonText.text = "Heal";
+        _blockButtonText.text = "Block";
+
+        E_attackButton.text = unit.damage switch
+        {
+            >= 100 => $"Deals  {unit.damage} damage",
+            >= 10 => $"Deals  {unit.damage} damage",
+            < 10 => $"Deals   {unit.damage} damage"
+        };
+
+        E_healButton.text = $"Heals {unit.countOfHeal} HP";
+        E_healButton_Cost.text = unit.costOfHeal switch
+        {
+            >= 10 => $"Cost  {unit.costOfHeal} mana",
+            < 10 => $"Cost   {unit.costOfHeal} mana"
+        };
+
+        E_blockTextRu.text = string.Empty;
+        E_blockTextEn.text = "Blocks next enemy attack";
+
+        E_blockButton_Cost.text = unit.costOfBlock switch
+        {
+            >= 10 => $"Cost {unit.costOfBlock} mana",
+            < 10 => $"Cost  {unit.costOfBlock} mana"
+        };
+    }
+    private void SetEnemyInformationRus(Unit unit)
+    {
+        InformationAboutExp.text = unit.givesExp switch
+        {
+            >= 10 => $"Падает  {unit.givesExp}  ОП",
+            < 10 => $"Падает  {unit.givesExp}   ОП"
+        };
+        InformationAboutHealing.text = unit.countOfHeal switch
+        {
+            >= 100 => $" Лечится на {unit.countOfHeal} ОЗ",
+            >= 10 => $" Лечится на {unit.countOfHeal} ОЗ",
+            < 10 => $" Лечится на {unit.countOfHeal} ОЗ"
+        };
+        InformationAboutDmg.text = unit.damage switch
+        {
+            >= 100 => $"Наносит {unit.damage} урона",
+            >= 10 => $"Наносит {unit.damage} урона",
+            < 10 => $"Наносит  {unit.damage}  урона"
+        };
+
+        I_blockTextE.text = string.Empty;
+        I_blockTextR.text = "Ваша следующая атака провалиться!";
+    }
+    private void SetEnemyInformationEng(Unit unit)
+    {
+        InformationAboutExp.text = unit.givesExp switch
+        {
+            >= 100 => $"Gives {unit.givesExp}  Exp",
+            >= 10 => $"Gives  {unit.givesExp}  Exp",
+            < 10 => $"Gives   {unit.givesExp}  Exp"
+        };
+        InformationAboutHealing.text = unit.countOfHeal switch
+        {
+            >= 100 => $" Heals {unit.countOfHeal}  HP",
+            >= 10 => $" Heals  {unit.countOfHeal}  HP",
+            < 10 => $" Heals   {unit.countOfHeal}  HP"
+        };
+        InformationAboutDmg.text = unit.damage switch
+        {
+            >= 100 => $"Deals {unit.damage} damage",
+            >= 10 => $"Deals  {unit.damage} damage",
+            < 10 => $"Deals  {unit.damage}  damage"
+        };
+
+        I_blockTextR.text = string.Empty;
+        I_blockTextE.text = "Your next attack will fail!";
+    }
     public void RemoveHP(int hp, Unit unit, bool isDead)
     {
         if (isDead)

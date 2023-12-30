@@ -41,6 +41,12 @@ public class SFXSystem : MonoBehaviour
         _audioSourceSound.UnPause();
         _audioSourceMusic.UnPause();
     }
+    public float ResetMusic(float volume)
+    {
+        float _musicVolume = _audioSourceMusic.volume;
+        PlayMusic(_audioSourceMusic.clip, volume);
+        return _musicVolume;
+    }
     public IEnumerator SoundErrors()
     {
         while (true)

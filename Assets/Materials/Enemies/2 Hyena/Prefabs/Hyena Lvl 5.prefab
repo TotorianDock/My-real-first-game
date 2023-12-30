@@ -64,7 +64,7 @@ MonoBehaviour:
   costOfBlock: -1
   animator: {fileID: 877143950348214734}
   nextPrefab: {fileID: 877143950348214732}
-  enemyName: 3
+  enemyName: 2
 --- !u!95 &877143950348214734
 Animator:
   serializedVersion: 4
@@ -110,7 +110,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 877143950908541868}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

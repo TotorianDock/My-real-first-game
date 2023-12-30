@@ -50,21 +50,21 @@ MonoBehaviour:
   unitNameRU: "\u0421\u0442\u0435\u0440\u0432\u044F\u0442\u043D\u0438\u043A"
   unitLevel: 0
   damage: 40
-  maxHP: 150
-  curentHP: 150
+  maxHP: 90
+  curentHP: 90
   maxMana: -1
   curentMana: -1
   maxExp: -1
   curentExp: -1
-  givesExp: 55
+  givesExp: 20
   missingManaAndExp: 1
   missingCombatButtons: 1
   countOfHeal: 30
   costOfHeal: -1
   costOfBlock: -1
   animator: {fileID: 6094009584231569081}
-  nextPrefab: {fileID: 7386216863943290681}
-  enemyName: 4
+  nextPrefab: {fileID: 7386216863943290681, guid: 44fa2d63f3c087e4a89d078e29f9fb02, type: 3}
+  enemyName: 3
 --- !u!95 &6094009584231569081
 Animator:
   serializedVersion: 4

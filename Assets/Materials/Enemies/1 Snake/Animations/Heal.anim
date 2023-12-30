@@ -23,7 +23,7 @@ AnimationClip:
       value: {fileID: 21300000, guid: 3a9f34a7b70a18f44a78088124ad855c, type: 3}
     - time: 0.41666666
       value: {fileID: 21300000, guid: c01ae5e30ed8b964e9f914846c495262, type: 3}
-    - time: 0.8333333
+    - time: 1
       value: {fileID: 21300000, guid: 3a9f34a7b70a18f44a78088124ad855c, type: 3}
     attribute: m_Sprite
     path: Snake
@@ -52,7 +52,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.84999996
+    m_StopTime: 1.0166667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

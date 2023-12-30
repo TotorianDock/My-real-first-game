@@ -5,11 +5,11 @@ using System.Collections;
 public class DialogueSystem : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _dialogueText;
-    private string _dT;
     [SerializeField] private TextMeshProUGUI _dialogueTextDefeat;
     [SerializeField] private TextMeshProUGUI _dialogueTextWon_E;
     [SerializeField] private TextMeshProUGUI _dialogueTextWon_R;
     [SerializeField] private TextMeshProUGUI _dialogueTextWon2;
+    private string _dT;
 
     private float _textSpeed;
     private float _ExecutionTime;
@@ -75,15 +75,15 @@ public class DialogueSystem : MonoBehaviour
                     _dialogueTextDefeat.text += c;
                     break;
 
-                case State.Win_E:
+                case State.Battle_Win_Eng:
                     _dialogueTextWon_E.text += c;
                     break;
 
-                case State.Win_R:
+                case State.Battle_Win_Ru:
                     _dialogueTextWon_R.text += c;
                     break;
 
-                case State.Win2:
+                case State.Game_Win:
                     _dialogueTextWon2.text += c;
                     break;
             }
@@ -100,48 +100,84 @@ public class DialogueSystem : MonoBehaviour
     }
     public void EnemyApproaches(Unit enemyUnit, bool isRussianTranslation, float _ExecutionTime)
     {
+        System.Random random = new();
+        int randomNumber = random.Next(0, 101);
         if (isRussianTranslation)
         {
-            switch (enemyUnit.enemyName)
+            if ((enemyUnit.enemyName == Unit.EnemyName.Snake) && (randomNumber == 99) && (_battleSystem.state != BattleState.START))
+                _dT = "О, привет! Давно не виделись!";
+            else
+                _dT = "Дикая Змея подходит...";
+            
+            if (randomNumber == 99)
             {
-                case Unit.EnemyName.Snake:
-                    _dT = "Дикая Змея подходит...";
-                    break;
-                
-                case Unit.EnemyName.Scorpio:
-                    _dT = "Дикий Скорпион подходит...";
-                    break;
-               
-                case Unit.EnemyName.Hyena:
-                    System.Random random = new();
-                    int randomiser = random.Next(0, 101);
-                    if (randomiser == 100)
-                        _dT = "Дикая Хиена подходит...";
-                    else
-                        _dT = "Дикая Гиена подходит...";
-                    break;
-                
-                //case Unit.EnemyName.Vulture:
-                //    break;
-                
-                default:
-                    _dT = "The M҈̡̛͔͔̃͒͆̍̏i҈̱̦́̒̾̀̚̚͢͞ś̵̨̬̤̠͓͇͉̮͙͌͐́̽̊̓̚͞s̸̨͕̖͚̝̱͖͗͗̕i̴̢̳͈͕̮̤҇̐́n҈̧̯̜͍̒̅̈́̈́͑̂̓̕ǵ̶̨̮̣̭̭͐͋̐̓̍͠Ë̸͚̦́̈́͌̕͜n̶̨̲͔̩̤̖̎͆̓͆̓̀̓̊͡    approaches.";
-                    break;
+                _dT = enemyUnit.enemyName switch
+                {
+                    Unit.EnemyName.Snake => _dT,
+                    Unit.EnemyName.Scorpio => "Дикий Рак подходит...",
+                    Unit.EnemyName.Hyena => "Дикая Хиена подходит...",
+                    Unit.EnemyName.Vulture => "Дикий Стервятник? подлетает?",
+                    Unit.EnemyName.Mummy => "Крепкая Mommy подходит...",
+                    Unit.EnemyName.Deceased => "Гигиенический Помойник подходит.",
+                    Unit.EnemyName.Wizard => "Добро-злой Маг подходит...",
+
+                    _ => "The M҈̡̛͔͔̃͒͆̍̏i҈̱̦́̒̾̀̚̚͢͞ś̵̨̬̤̠͓͇͉̮͙͌͐́̽̊̓̚͞s̸̨͕̖͚̝̱͖͗͗̕i̴̢̳͈͕̮̤҇̐́n҈̧̯̜͍̒̅̈́̈́͑̂̓̕ǵ̶̨̮̣̭̭͐͋̐̓̍͠Ë̸͚̦́̈́͌̕͜n̶̨̲͔̩̤̖̎͆̓͆̓̀̓̊͡    approaches."
+                };
+            }
+            else
+            {
+                _dT = enemyUnit.enemyName switch
+                {
+                    Unit.EnemyName.Snake => _dT,
+                    Unit.EnemyName.Scorpio => "Дикий Скорпион подходит...",
+                    Unit.EnemyName.Hyena => "Дикая Гиена подходит...",
+                    Unit.EnemyName.Vulture => "Дикий Стервятник подлетает...",
+                    Unit.EnemyName.Mummy => "Крепкая Мумия подходит...",
+                    Unit.EnemyName.Deceased => "Гиеновидный Усопший подходит..",
+                    Unit.EnemyName.Wizard => "Серьёзный Маг подходит...",
+
+                    _ => "The M҈̡̛͔͔̃͒͆̍̏i҈̱̦́̒̾̀̚̚͢͞ś̵̨̬̤̠͓͇͉̮͙͌͐́̽̊̓̚͞s̸̨͕̖͚̝̱͖͗͗̕i̴̢̳͈͕̮̤҇̐́n҈̧̯̜͍̒̅̈́̈́͑̂̓̕ǵ̶̨̮̣̭̭͐͋̐̓̍͠Ë̸͚̦́̈́͌̕͜n̶̨̲͔̩̤̖̎͆̓͆̓̀̓̊͡    approaches."
+                };
             }
         }
-        else if(!isRussianTranslation)
+        else
         {
-            _dT = enemyUnit.enemyName switch
-            {
-                Unit.EnemyName.Snake => "The wild Snake approaches...",
-                Unit.EnemyName.Scorpio => "The wild Scorpio approaches...",
-                Unit.EnemyName.Hyena => "The wild Hyena approaches...",
-                //Unit.EnemyName.Vulture => "",
-                
-                _ => "The M҈̡̛͔͔̃͒͆̍̏i҈̱̦́̒̾̀̚̚͢͞ś̵̨̬̤̠͓͇͉̮͙͌͐́̽̊̓̚͞s̸̨͕̖͚̝̱͖͗͗̕i̴̢̳͈͕̮̤҇̐́n҈̧̯̜͍̒̅̈́̈́͑̂̓̕ǵ̶̨̮̣̭̭͐͋̐̓̍͠Ë̸͚̦́̈́͌̕͜n̶̨̲͔̩̤̖̎͆̓͆̓̀̓̊͡    approaches.",
-            };
-        }
+            if ((enemyUnit.enemyName == Unit.EnemyName.Snake) && (randomNumber == 99) && (_battleSystem.state != BattleState.START))
+                _dT = "Oh, hi! Long time no see!";
+            else
+                _dT = "The Wild Snake approaches...";
 
+            if (randomNumber == 99)
+            {
+                _dT = enemyUnit.enemyName switch
+                {
+                    Unit.EnemyName.Snake => _dT,
+                    Unit.EnemyName.Scorpio => "I'm tire of typing these lines...",
+                    Unit.EnemyName.Hyena => "You again! .......",
+                    Unit.EnemyName.Vulture => "The Strange Vulture? comes?",
+                    Unit.EnemyName.Mummy => "The Sturdy Mommy approaches...",
+                    Unit.EnemyName.Deceased => "Hygienic Dead man comes...",
+                    Unit.EnemyName.Wizard => "Good-evil Mage approaches...",
+
+                    _ => "The M҈̡̛͔͔̃͒͆̍̏i҈̱̦́̒̾̀̚̚͢͞ś̵̨̬̤̠͓͇͉̮͙͌͐́̽̊̓̚͞s̸̨͕̖͚̝̱͖͗͗̕i̴̢̳͈͕̮̤҇̐́n҈̧̯̜͍̒̅̈́̈́͑̂̓̕ǵ̶̨̮̣̭̭͐͋̐̓̍͠Ë̸͚̦́̈́͌̕͜n̶̨̲͔̩̤̖̎͆̓͆̓̀̓̊͡    подходит."
+                };
+            }
+            else
+            {
+                _dT = enemyUnit.enemyName switch
+                {
+                    Unit.EnemyName.Snake => _dT,
+                    Unit.EnemyName.Scorpio => "The Wild Scorpio approaches...",
+                    Unit.EnemyName.Hyena => "The Wild Hyena approaches...",
+                    Unit.EnemyName.Vulture => "The Strange Vulture comes...",
+                    Unit.EnemyName.Mummy => "The Sturdy Mummy approaches...",
+                    Unit.EnemyName.Deceased => "Hyena-like Deceased comes...",
+                    Unit.EnemyName.Wizard => "Serious Wizard approaches...",
+
+                    _ => "The M҈̡̛͔͔̃͒͆̍̏i҈̱̦́̒̾̀̚̚͢͞ś̵̨̬̤̠͓͇͉̮͙͌͐́̽̊̓̚͞s̸̨͕̖͚̝̱͖͗͗̕i̴̢̳͈͕̮̤҇̐́n҈̧̯̜͍̒̅̈́̈́͑̂̓̕ǵ̶̨̮̣̭̭͐͋̐̓̍͠Ë̸͚̦́̈́͌̕͜n̶̨̲͔̩̤̖̎͆̓͆̓̀̓̊͡    подходит."
+                };
+            }
+        }
         this._ExecutionTime = _ExecutionTime;
         StartCoroutine(StartDialogue(_dT));
     }
@@ -234,19 +270,25 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Snake => "Змея нападает на вас!",
                 Unit.EnemyName.Scorpio => "Скорпион нападает на вас!",
                 Unit.EnemyName.Hyena => "Гиена нападает на вас!",
-                //Unit.EnemyName.Vulture => "",
-                
+                Unit.EnemyName.Vulture => "Стервятник нападает на вас!",
+                Unit.EnemyName.Mummy => "Мумия нападает на вас!",
+                Unit.EnemyName.Deceased => "Усопший нападает на вас!",
+                Unit.EnemyName.Wizard => "Маг нападает на вас!",
+
                 _ => "The  M҈̱̝̳̟͉̭͕͛̚͜͞i̸̧̱̠̪̊̏̔̒̕ş̷͍̤͍̮̞̦̥͂͌̾̏̀͡ṣ̵̢̭̦̙̫̤̃̿̃̏͑̊͡i̷̢͎̯͔͑̊͡ͅn̵̢͉̦̗̜͂́̅͡ͅg҈̛͎̰̗̫̲̱͋̐̈́̌͑͢E̸̡̮̱͓̔̀̎̄̕ͅͅn̶̢̲͙͓̟͈̫̫̠̿̅̀͠'s attack is successful.",
             };
         }
-        else if (!isRussianTranslation)
+        else
         {
             _dT = enemyUnit.enemyName switch
             {
                 Unit.EnemyName.Snake => "Snake attacks you!",
                 Unit.EnemyName.Scorpio => "Scorpio attacks you!",
                 Unit.EnemyName.Hyena => "Hyena attacks you!",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Vulture attacks you!",
+                Unit.EnemyName.Mummy => "Mummy attacks you!",
+                Unit.EnemyName.Deceased => "Deceased attacks you!",
+                Unit.EnemyName.Wizard => "Wizard attacks you!",
 
                 _ => "The  M҈̱̝̳̟͉̭͕͛̚͜͞i̸̧̱̠̪̊̏̔̒̕ş̷͍̤͍̮̞̦̥͂͌̾̏̀͡ṣ̵̢̭̦̙̫̤̃̿̃̏͑̊͡i̷̢͎̯͔͑̊͡ͅn̵̢͉̦̗̜͂́̅͡ͅg҈̛͎̰̗̫̲̱͋̐̈́̌͑͢E̸̡̮̱͓̔̀̎̄̕ͅͅn̶̢̲͙͓̟͈̫̫̠̿̅̀͠'s attack is successful.",
             };
@@ -264,19 +306,25 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Snake => "Змея нападает на вас...",
                 Unit.EnemyName.Scorpio => "Скорпион нападает на вас...",
                 Unit.EnemyName.Hyena => "Гиена нападает на вас...",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Стервятник нападает на вас...",
+                Unit.EnemyName.Mummy => "Мумия нападает на вас...",
+                Unit.EnemyName.Deceased => "Усопший нападает на вас...",
+                Unit.EnemyName.Wizard => "Маг нападает на вас...",
 
                 _ => "The Ḿ̵̧̩̜̱͙̰͒̕i̵̡̠̦̤̦̥̞͇̫̓̓͆̀̑́́͡s̸̨͙̩͉͑̂͛͌̐͡s҉̧͇̯̀̔̎̑̑́͒͠i҈̨̥̮̗̦̱̇̿͌̿̕n̷̢͍͖̬̩̋͋̄͒͊̕ǵ̶̡̟̯̞͚̭̂̇̾̕E̶̩͈̅̇̉͂̚͜͠n҈͖̗̰̝͚̒̓̅́̕͜  attacks на вас...",
             };
         }
-        else if (!isRussianTranslation)
+        else
         {
             _dT = enemyUnit.enemyName switch
             {
                 Unit.EnemyName.Snake => "Snake attacks you...",
                 Unit.EnemyName.Scorpio => "Scorpio attacks you...",
                 Unit.EnemyName.Hyena => "Hyena attacks you...",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Vulture attacks you...",
+                Unit.EnemyName.Mummy => "Mummy attacks you...",
+                Unit.EnemyName.Deceased => "Deceased attacks you...",
+                Unit.EnemyName.Wizard => "Wizard attacks you...",
 
                 _ => "The Ḿ̵̧̩̜̱͙̰͒̕i̵̡̠̦̤̦̥̞͇̫̓̓͆̀̑́́͡s̸̨͙̩͉͑̂͛͌̐͡s҉̧͇̯̀̔̎̑̑́͒͠i҈̨̥̮̗̦̱̇̿͌̿̕n̷̢͍͖̬̩̋͋̄͒͊̕ǵ̶̡̟̯̞͚̭̂̇̾̕E̶̩͈̅̇̉͂̚͜͠n҈͖̗̰̝͚̒̓̅́̕͜  attacks на вас...",
             };
@@ -294,19 +342,25 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Snake => "Змея кусает свой хвост...",
                 Unit.EnemyName.Scorpio => "Скорпион играет в Доту 2...",
                 Unit.EnemyName.Hyena => "Гиена не выступает в цирке...",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Стервятник что-то вспоминает...",
+                Unit.EnemyName.Mummy => "Мумия ест свои бинты...",
+                Unit.EnemyName.Deceased => "Успоший моется...",
+                Unit.EnemyName.Wizard => "Маг кастует заклинание...",
 
                 _ => "The  M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is playing Dota 2...",
             };
         }
-        else if (!isRussianTranslation)
+        else
         {
             _dT = enemyUnit.enemyName switch
             {
-                Unit.EnemyName.Snake => "Snake biting his own tail...",
+                Unit.EnemyName.Snake => "Snake biting own tail...",
                 Unit.EnemyName.Scorpio => "Scorpio is playing Dota 2...",
                 Unit.EnemyName.Hyena => "Hyena eats carrion...",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Vulture remembers something....",
+                Unit.EnemyName.Mummy => "Mummy eats own bandages...",
+                Unit.EnemyName.Deceased => "Deceased washes himself...",
+                Unit.EnemyName.Wizard => "The mage casts a spell...",
 
                 _ => "The  M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  is playing Dota 2...",
             };
@@ -324,19 +378,25 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Snake => "... и каким-то образом исцеляется!",
                 Unit.EnemyName.Scorpio => "... и каким-то образом выигрывает!",
                 Unit.EnemyName.Hyena => "... но она не волк!",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "... и он исцеляется.",
+                Unit.EnemyName.Mummy => "Зачем?...",
+                Unit.EnemyName.Deceased => "... и каким-то образом исцеляется!",
+                Unit.EnemyName.Wizard => "... и он исцеляется.",
 
                 _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  ... но она не волк.",
             };
         }
-        else if (!isRussianTranslation)
+        else
         {
             _dT = enemyUnit.enemyName switch
             {
                 Unit.EnemyName.Snake => "... and somehow gets healed!",
                 Unit.EnemyName.Scorpio => "... and somehow wins!",
-                Unit.EnemyName.Hyena => "... and he heals!",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Hyena => "... and gets healed!",
+                Unit.EnemyName.Vulture => "... and somehow gets healed.",
+                Unit.EnemyName.Mummy => "For what?..",
+                Unit.EnemyName.Deceased => "... and somehow gets healed!",
+                Unit.EnemyName.Wizard => "... and gets healed.",
 
                 _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠   ... но она не волк.",
             };
@@ -354,19 +414,26 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Snake => "Змея сворачивается в уробороса,",
                 Unit.EnemyName.Scorpio => "Скорпион становиться BALL,",
                 Unit.EnemyName.Hyena => "Гиена смеется над вами",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Стервятник глючит...",
+                Unit.EnemyName.Mummy => "Мумия говорит, что она мать.",
+                Unit.EnemyName.Deceased => "Усопший воняет...",
+                Unit.EnemyName.Wizard => "Маг крутит палкой...",
 
                 _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  curls up in a BALL,",
             };
         }
-        else if (!isRussianTranslation)
+        else
         {
             _dT = enemyUnit.enemyName switch
             {
                 Unit.EnemyName.Snake => "Snake curls up into a uroboros",
                 Unit.EnemyName.Scorpio => "Scorpio curls up in a BALL,",
                 Unit.EnemyName.Hyena => "Hyena's laughing at you",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Vulture glitches...",
+                Unit.EnemyName.Mummy => "Mummy says she's a mother.",
+                Unit.EnemyName.Deceased => "Deceased stinks...",
+                Unit.EnemyName.Wizard => "Wizard spins his wand...",
+
 
                 _ => "The M̶̧̪̟̫̗͚̫̪̳҇̂̓͑i̸͔͎͎̠̳͚̋͑̎̋̊̔̄̕͢ͅs҉̪̙̬̠͍͈̲͖̌͊̀̍͐̾̚͜͝s҉̱̱̥̞̱͆̔̅̆͜͝i҉͔̫͔̳̞̉̀̐̑̃̚͢͠n҈̬̙͙̪̉̄͜͞g̵̨̗̠̞͈͔̜͖̱̐̅́̆̕Ḙ̴̢̛͔̰͕̘̝̟̋̽͛͗͋ņ̸̬̮̦̣͒̽̂͗̍̍̾͠  curls up in a BALL,",
             };
@@ -384,19 +451,25 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Snake => "чтобы заблокировать вашу атаку?",
                 Unit.EnemyName.Scorpio => "чтобы заблокировать вашу атаку?",
                 Unit.EnemyName.Hyena => "Вы смущаетесь, вы можете промануться",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Ваши руки дрожат. Вы боитесь.",
+                Unit.EnemyName.Mummy => "Вы в смятении...",
+                Unit.EnemyName.Deceased => "Вам противно его трогать...",
+                Unit.EnemyName.Wizard => "... вы боитесь бить его.",
 
                 _ => "You're shy, you might miss",
             };
         }
-        else if (!isRussianTranslation)
+        else
         {
             _dT = enemyUnit.enemyName switch
             {
                 Unit.EnemyName.Snake => "to block your attack?",
                 Unit.EnemyName.Scorpio => "to block your attack?",
                 Unit.EnemyName.Hyena => "You're shy, you might miss",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Your hands quake. You're afraid.",
+                Unit.EnemyName.Mummy => "You're in turmoil...",
+                Unit.EnemyName.Deceased => "You're disgusted to touch him...",
+                Unit.EnemyName.Wizard => "... you're afraid to hit him.",
 
                 _ => "Вы смущаетесь, вы можете промануться",
             };
@@ -414,19 +487,25 @@ public class DialogueSystem : MonoBehaviour
                 Unit.EnemyName.Snake => "Дикая Змея мертва!",
                 Unit.EnemyName.Scorpio => "Дикий Скорпион мертв!",
                 Unit.EnemyName.Hyena => "Дикая Гиена мертва!",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "Дикий Стервятник мертв!",
+                Unit.EnemyName.Mummy => "Дикая Мумия мертва!",
+                Unit.EnemyName.Deceased => "Гиеновидный Усопший мертв!",
+                Unit.EnemyName.Wizard => "Маг погиб.",
 
                 _ => "The M̵̡͕̱̒̆́̿̕i҈̳̩͈̓̽̓͊̕͜s̴̡̞̱̫̭͎̣͉̆̈̆͞s̶̨̗̝̬̤̮̪̟͇̆̌̆̕i̵͖̠̫̭̊̆͌͢͝n҉̡̙̫̜̞̟̩̤̖͆́̄̌͡g҈̨̠͎̝̝̋̀͌̋̓̆͛͠ͅE҈̧̛̬͓͖̰͋͌͛̎͆͗͌n҈̠̞҇̆̐͜  is dead.?",
             };
         }
-        else if (!isRussianTranslation)
+        else
         {
             _dT = enemyUnit.enemyName switch
             {
                 Unit.EnemyName.Snake => "The wild Snake is dead!",
                 Unit.EnemyName.Scorpio => "The wild Scorpio is dead!",
                 Unit.EnemyName.Hyena => "The wild Hyena is dead!",
-                //Unit.EnemyName.Vulture => "",
+                Unit.EnemyName.Vulture => "The wild Vulture is dead!",
+                Unit.EnemyName.Mummy => "The Sturdy Mummy is dead!",
+                Unit.EnemyName.Deceased => "Hyena-like Deceased is dead!",
+                Unit.EnemyName.Wizard => "Wizard is dead.",
 
                 _ => "The M̵̡͕̱̒̆́̿̕i҈̳̩͈̓̽̓͊̕͜s̴̡̞̱̫̭͎̣͉̆̈̆͞s̶̨̗̝̬̤̮̪̟͇̆̌̆̕i̵͖̠̫̭̊̆͌͢͝n҉̡̙̫̜̞̟̩̤̖͆́̄̌͡g҈̨̠͎̝̝̋̀͌̋̓̆͛͠ͅE҈̧̛̬͓͖̰͋͌͛̎͆͗͌n҈̠̞҇̆̐͜  is dead.?",
             };
@@ -475,12 +554,12 @@ public class DialogueSystem : MonoBehaviour
         if (isRussianTranslation)
         {
             _dT = "Вы выиграли битву!";
-            _state = State.Win_R;
+            _state = State.Battle_Win_Ru;
         }
         else
         {
             _dT = "You won the battle!";
-            _state = State.Win_E;
+            _state = State.Battle_Win_Eng;
         }
 
         _CantInterrupt = true;
@@ -494,17 +573,17 @@ public class DialogueSystem : MonoBehaviour
         else
             _dT = "You won the game!";
 
-        _state = State.Win2;
+        _state = State.Game_Win;
         this._ExecutionTime = _ExecutionTime;
         StartCoroutine(StartDialogue(_dT));
     }
 
     private enum State
     {
-        None = 0,
-        Win_E = 1,
-        Win_R = 2,
-        Win2 = 3,
-        Defeat = 4
+        None,
+        Battle_Win_Eng,
+        Battle_Win_Ru,
+        Game_Win,
+        Defeat
     }
 }

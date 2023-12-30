@@ -10,9 +10,9 @@ public class SFXFields_Menu : SFXSystem
 
     public enum ClipsName
     {
-        MenuMusic1 = 0,
-        MenuMusic2 = 1,
-        MenuMusic3 = 2,
-        MenuMusic4 = 3
+        MenuMusic1,
+        MenuMusic2,
+        MenuMusic3,
+        MenuMusic4
     }
 }

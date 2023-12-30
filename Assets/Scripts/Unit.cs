@@ -7,14 +7,14 @@ public class Unit : MonoBehaviour
     public string unitNameRU = "M̵̡͕̱̒̆́̿̕i҈̳̩͈̓̽̓͊̕͜s̴̡̞̱̫̭͎̣͉̆̈̆͞s̶̨̗̝̬̤̮̪̟͇̆̌̆̕i̵͖̠̫̭̊̆͌͢͝n҉̡̙̫̜̞̟̩̤̖͆́̄̌͡g҈̨̠͎̝̝̋̀͌̋̓̆͛͠ͅE҈̧̛̬͓͖̰͋͌͛̎͆͗͌n҈̠̞҇̆̐͜ ";
 
     [Header("Level")]
-    public int unitLevel = 999;
+    public int unitLevel = 255;
 
     [Header("Damage")]
-    public int damage = 999;
+    public int damage = 255;
 
     [Header("Health")]
-    public int maxHP = 999;
-    public int curentHP = 999;
+    public int maxHP = 255;
+    public int curentHP = 255;
 
     [Header("Mana")]
     public int maxMana = -1;
@@ -23,14 +23,14 @@ public class Unit : MonoBehaviour
     [Header("Experience")]
     public short maxExp = -1;
     public short curentExp = -1; 
-    public short givesExp = 0;
+    public short givesExp = 255;
 
     [Header("Missing")]
     public bool missingManaAndExp = true;
     public bool missingCombatButtons = true;
 
     [Header("Skils")]
-    public int countOfHeal = 999;
+    public int countOfHeal = 255;
     public int costOfHeal = -1;
     public int costOfBlock = -1;
 
@@ -62,15 +62,17 @@ public class Unit : MonoBehaviour
         curentHP += countOfHeal;
         if (curentHP >= maxHP)
             curentHP = maxHP;
-
     }
 
     public enum EnemyName
     {
-        ThisIsNotTheEnemy = 0,
-        Snake = 1,
-        Scorpio = 2,
-        Hyena = 3,
-        Vulture = 4
+        Snake,
+        Scorpio,
+        Hyena,
+        Vulture,
+        Mummy,
+        Deceased,
+        Wizard,
+        NotAnEnemy
     }
 }
